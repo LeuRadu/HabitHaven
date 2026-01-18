@@ -30,10 +30,10 @@ data class HabitEntity(
     val id: String = UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "chain_id") val chainId: String,
-    @ColumnInfo(name = "parent_habit_id") val parentHabitId: String?,
+    @ColumnInfo(name = "parent_habit_id") val parentHabitId: String? = null, //default no parent
 
     @ColumnInfo(name = "focus_id") val focusId: String,
-    @ColumnInfo(name = "project_id") val projectId: String?,
+    @ColumnInfo(name = "project_id") val projectId: String? = null,
 
     val title: String,
 
@@ -52,8 +52,10 @@ data class HabitEntity(
     val skipped: Int = 0,
     @ColumnInfo(name = "last_completion_date") val lastCompletionDate: Long? = null,
 
+    @ColumnInfo(name = "sort_order") val sortOrder: Int = 1,
+
     // Forgiveness Logic
     @ColumnInfo(name = "last_checked") val lastChecked: Long,
-    @ColumnInfo(name = "last_skip") val lastSkip: Long?,
-    @ColumnInfo(name = "freeze_interval_days") val freezeIntervalDays: Int?
+    @ColumnInfo(name = "last_skip") val lastSkip: Long? = null,
+    @ColumnInfo(name = "freeze_interval_days") val freezeIntervalDays: Int? = null
 )

@@ -18,17 +18,16 @@ import java.util.UUID
         )
     ],
     // We index 'timestamp' because you will frequently query ranges
-    indices = [Index("habit_id"), Index("timestamp")]
+    indices = [Index("habit_id"), Index("chain_id"), Index("timestamp")]
 )
 data class HabitCompletionEntity(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "habit_id") val habitId: String,
+    @ColumnInfo(name = "chain_id") val chainId: String,
 
     val timestamp: Long,
-
-    // Default 1 represents a simple "Check".
-    // Future proofing: If you track "minutes read", this stores the number.
+    // Future proofing: If you track minutes, this stores the number.
     val value: Int = 1
 )

@@ -12,5 +12,6 @@ data class FocusEntity(
     val name: String,
     @ColumnInfo(name = "icon_name") val iconName: String,
     @ColumnInfo(name = "color_index") val colorIndex: Int,
-    @ColumnInfo(name = "sort_order") val sortOrder: Int
+    @ColumnInfo(name = "sort_order") val sortOrder: Int,
+    @ColumnInfo(name = "is_archived") val isArchived: Boolean = false
 )

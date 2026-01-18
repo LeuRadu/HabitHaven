@@ -30,7 +30,7 @@ data class TaskEntity(
     val id: String = UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "focus_id") val focusId: String?,
-    @ColumnInfo(name = "project_id") val projectId: String?,
+    @ColumnInfo(name = "project_id") val projectId: String? = null,
 
     val title: String,
 

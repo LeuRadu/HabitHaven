@@ -18,4 +18,10 @@ dependencies {
 
     // Coroutines (Useful for background DB work)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Room Testing Helper (CRITICAL)
+    androidTestImplementation(libs.androidx.room.testing)
+
+    // Coroutines Testing
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

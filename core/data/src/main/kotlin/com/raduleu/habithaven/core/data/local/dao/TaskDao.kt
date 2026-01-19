@@ -12,6 +12,12 @@ import kotlinx.coroutines.flow.Flow
 interface TaskDao {
 
     @Query("""
+        SELECT * FROM tasks
+        ORDER BY completed_at ASC, due_date ASC
+    """)
+    fun getAllTasks(): Flow<List<TaskEntity>>
+
+    @Query("""
         SELECT * FROM tasks 
         WHERE completed_at IS NULL OR completed_at >= :startOfToday
         ORDER BY completed_at ASC, due_date ASC
@@ -21,10 +27,10 @@ interface TaskDao {
     @Query("""
         SELECT * FROM tasks 
         WHERE focus_id = :focusId 
-        AND (completed_at IS NULL OR completed_at >= :startOfToday)
+        AND (completed_at IS NULL OR completed_at >= :startOfDay)
         ORDER BY completed_at ASC, due_date ASC
     """)
-    fun getTasksByFocus(focusId: String, startOfToday: Long): Flow<List<TaskEntity>>
+    fun getActiveTasksByFocus(focusId: String, startOfDay: Long): Flow<List<TaskEntity>>
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     suspend fun getTaskById(id: String): TaskEntity?
@@ -37,4 +43,8 @@ interface TaskDao {
 
     @Query("DELETE FROM tasks WHERE id = :id")
     suspend fun deleteTaskById(id: String)
+
+    @Query("UPDATE tasks SET completed_at = :completedAt WHERE id = :taskId")
+    suspend fun updateCompletionStatus(taskId: String, completedAt: Long?)
+
 }

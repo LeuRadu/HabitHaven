@@ -5,5 +5,6 @@ data class Focus(
     val name: String,
     val iconName: String,
     val colorIndex: Int,
-    val sortOrder: Int
+    val sortOrder: Int,
+    val isArchived: Boolean,
 )

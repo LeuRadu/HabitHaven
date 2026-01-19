@@ -42,7 +42,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
+                // --- UNIT TEST DEFAULTS (Run on JVM) ---
                 add("testImplementation", libs.findLibrary("junit").get())
+                add("testImplementation", libs.findLibrary("mockk").get())
+                add("testImplementation", libs.findLibrary("kotlinx.coroutines.test").get())
+                // --- ANDROID TEST DEFAULTS (Run on Emulator) ---
                 add("androidTestImplementation", libs.findLibrary("androidx.junit").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.espresso.core").get())
             }

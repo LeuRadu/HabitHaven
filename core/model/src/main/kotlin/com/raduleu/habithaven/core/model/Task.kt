@@ -1,7 +1,6 @@
 package com.raduleu.habithaven.core.model
 
-enum class TaskDifficulty { EASY, MEDIUM, HARD, MILESTONE }
-enum class TaskPriority { LOW, MEDIUM, HIGH }
+import java.time.LocalDate
 
 data class Task(
     val id: String,
@@ -9,7 +8,8 @@ data class Task(
     val projectId: String?,
     val title: String,
     val completedAt: Long?,
-    val dueDate: Long?,
-    val difficulty: TaskDifficulty,
-    val priority: TaskPriority
+    val dueDate: LocalDate?,
+    val difficulty: Difficulty,
+    val priority: Priority
 )
+

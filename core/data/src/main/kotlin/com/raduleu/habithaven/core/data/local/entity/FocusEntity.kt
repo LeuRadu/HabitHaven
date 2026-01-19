@@ -8,7 +8,7 @@ import java.util.UUID
 @Entity(tableName = "focus")
 data class FocusEntity(
     @PrimaryKey
-    val id: String = UUID.randomUUID().toString(), // Generates ID automatically
+    val id: String = UUID.randomUUID().toString(),
     val name: String,
     @ColumnInfo(name = "icon_name") val iconName: String,
     @ColumnInfo(name = "color_index") val colorIndex: Int,

@@ -9,8 +9,8 @@ data class Habit(
     val title: String,
     val repetitionRule: String, // Kept as JSON string for now
     val createdAt: Long,
-    val difficulty: TaskDifficulty, // Reusing TaskDifficulty
-    val priority: TaskPriority,     // Reusing TaskPriority
+    val difficulty: Difficulty,
+    val priority: Priority,
     val retired: Boolean,
     val isNewHabit: Boolean,
     val latestStreak: Int,

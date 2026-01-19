@@ -4,13 +4,10 @@ import com.raduleu.habithaven.core.model.Focus
 import kotlinx.coroutines.flow.Flow
 
 interface FocusRepository {
-    fun getAllFocuses(): Flow<List<Focus>>
-
+    fun getActiveFocuses(): Flow<List<Focus>>
     suspend fun getFocusById(id: String): Focus?
 
-    suspend fun addFocus(focus: Focus)
-
-    suspend fun updateFocus(focus: Focus)
-
-    suspend fun deleteFocus(focus: Focus)
+    suspend fun upsertFocus(focus: Focus)
+    suspend fun deleteFocus(id: String)
+    suspend fun archiveFocus(id: String)
 }

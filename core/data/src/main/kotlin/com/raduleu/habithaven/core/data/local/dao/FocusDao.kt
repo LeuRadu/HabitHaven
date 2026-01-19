@@ -1,7 +1,6 @@
 package com.raduleu.habithaven.core.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -30,8 +29,8 @@ interface FocusDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertFocus(focus: FocusEntity)
 
-    @Delete
-    suspend fun deleteFocus(focus: FocusEntity)
+    @Query("DELETE FROM focus WHERE id = :id")
+    suspend fun deleteFocusById(id: String)
 
     @Query("UPDATE focus SET is_archived = 1 WHERE id = :id")
     suspend fun archiveFocus(id: String)

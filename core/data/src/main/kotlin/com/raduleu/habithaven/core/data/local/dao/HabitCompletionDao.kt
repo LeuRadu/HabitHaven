@@ -11,11 +11,21 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface HabitCompletionDao {
 
+    @Query("SELECT * FROM habit_completions")
+    fun getAllCompletions(): Flow<List<HabitCompletionEntity>>
+
     @Query("SELECT * FROM habit_completions WHERE habit_id = :habitId ORDER BY timestamp DESC")
     fun getCompletionsForHabit(habitId: String): Flow<List<HabitCompletionEntity>>
 
     @Query("SELECT * FROM habit_completions WHERE chain_id = :chainId ORDER BY timestamp DESC")
     fun getCompletionsForHabitChain(chainId: String): Flow<List<HabitCompletionEntity>>
+
+    @Query("""
+    SELECT C.* FROM habit_completions AS C
+    INNER JOIN habits AS H ON C.habit_id = H.id
+    WHERE H.focus_id = :focusId
+""")
+    fun getCompletionsForFocus(focusId: String): Flow<List<HabitCompletionEntity>>
 
     @Query("""
         SELECT * FROM habit_completions 

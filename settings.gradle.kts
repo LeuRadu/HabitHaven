@@ -26,4 +26,4 @@ include(":core:model")
 include(":core:data")
 include(":core:designsystem")
 include(":feature:agenda")
- 
+include(":feature:focus")

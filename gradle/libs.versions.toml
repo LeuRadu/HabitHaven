@@ -10,6 +10,7 @@ activityCompose = "1.9.3"
 composeBom = "2024.10.01"
 hilt = "2.52"
 ksp = "2.0.21-1.0.27" # Must match Kotlin version
+navigationCompose = "2.8.0"
 room = "2.6.1"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
@@ -23,6 +24,7 @@ mockk = "1.14.5"
 [libraries]
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

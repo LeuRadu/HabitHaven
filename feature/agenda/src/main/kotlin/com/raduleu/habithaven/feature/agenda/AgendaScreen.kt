@@ -1,6 +1,8 @@
 package com.raduleu.habithaven.feature.agenda
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +24,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,6 +37,7 @@ import com.raduleu.habithaven.feature.agenda.ui.FocusCard
 @Composable
 fun AgendaRoute(
     onAddFocusButtonClick: () -> Unit,
+    onLongPress: (String) -> Unit,
     viewModel: AgendaViewModel = hiltViewModel()
 ) {
 
@@ -55,14 +60,17 @@ fun AgendaRoute(
         AgendaScreen(
             modifier = Modifier.padding(screenPadding),
             uiState = uiState,
+            onLongPress
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AgendaScreen(
     modifier: Modifier,
     uiState: AgendaUiState,
+    onFocusLongClick: (String) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -81,15 +89,29 @@ fun AgendaScreen(
                 )
             }
             is AgendaUiState.Success -> {
+                val haptics = LocalHapticFeedback.current
+
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     itemsIndexed(uiState.focuses) { index, focusWithChildren ->
 
+                        val focusLongClick = {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onFocusLongClick(focusWithChildren.focus.id)
+                        }
+
                         FocusCard(
+                            modifier = Modifier.combinedClickable(
+                                onClick = {
+                                    //TODO: handle expand card here instead?
+                                },
+                                onLongClick = focusLongClick
+                            ),
                             focus = focusWithChildren.focus,
                             tasks = focusWithChildren.tasks,
-                            habits = focusWithChildren.habits
+                            habits = focusWithChildren.habits,
+                            onLongClick = focusLongClick
                         )
 
                         // Add Separator only if it's NOT the last item
@@ -154,6 +176,7 @@ private fun AgendaScreenPreview() {
         AgendaScreen(
             modifier = Modifier,
             uiState = AgendaUiState.Success(focuses),
+            {}
         )
     }
 }

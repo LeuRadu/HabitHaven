@@ -33,6 +33,7 @@ interface FocusDao {
     @Query("DELETE FROM focus WHERE id = :id")
     suspend fun deleteFocusById(id: String)
 
+    //TODO: consider archive feature - let user choose if they keep habits/tasks
     @Query("UPDATE focus SET is_archived = 1 WHERE id = :id")
     suspend fun archiveFocus(id: String)
 }

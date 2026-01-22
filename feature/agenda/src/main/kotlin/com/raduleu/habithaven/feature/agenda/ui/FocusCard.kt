@@ -3,8 +3,9 @@ package com.raduleu.habithaven.feature.agenda.ui
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,10 +39,11 @@ import com.raduleu.habithaven.core.model.Task
 
 @Composable
 fun FocusCard(
+    modifier: Modifier = Modifier,
     focus: Focus,
     tasks: List<Task>,
     habits: List<Habit>,
-    modifier: Modifier = Modifier
+    onLongClick: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(true) }
 
@@ -75,7 +77,8 @@ fun FocusCard(
             icon = Icons.Default.Star, // TODO: replace placeholder with actual icon
             color = baseColor,
             isExpanded = isExpanded,
-            onToggle = { isExpanded = !isExpanded }
+            onToggle = { isExpanded = !isExpanded },
+            onLongClick = onLongClick
         )
 
         // --- SUBLIST (Conditional) ---
@@ -96,25 +99,30 @@ fun FocusCard(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FocusHeader(
     name: String,
     icon: ImageVector,
     color: Color,
     isExpanded: Boolean,
-    onToggle: () -> Unit
+    onToggle: () -> Unit,
+    onLongClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onToggle() }
+            .combinedClickable(
+                onClick = onToggle,
+                onLongClick = onLongClick
+            )
             .padding(
                 horizontal = 16.dp,
                 vertical = 12.dp
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Icon Box with stronger tint
+        // Icon Box with stronger tint (placeholder)
         Surface(
             color = color.copy(alpha = 0f),
             modifier = Modifier.size(32.dp)

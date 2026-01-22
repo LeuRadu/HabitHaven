@@ -11,8 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.raduleu.habithaven.feature.agenda.agendaScreen
 import com.raduleu.habithaven.feature.agenda.navigateToAgenda
-import com.raduleu.habithaven.feature.focus.createFocusScreen
-import com.raduleu.habithaven.feature.focus.navigateToCreateFocus
+import com.raduleu.habithaven.feature.focus.navigation.focusFormScreen
+import com.raduleu.habithaven.feature.focus.navigation.navigateToCreateFocus
+import com.raduleu.habithaven.feature.focus.navigation.navigateToEditFocus
 import com.raduleu.habithaven.ui.HabitHavenAppState
 
 @Composable
@@ -37,13 +38,15 @@ fun HabitHavenNavHost(
             }
         }
 
-        createFocusScreen(
+        focusFormScreen(
             onBackClick = { appState.popBackStack() }
         )
 
         agendaScreen(
-            onAddFocusButtonClick = { appState.navController.navigateToCreateFocus() }
+            onAddFocusButtonClick = { appState.navController.navigateToCreateFocus() },
+            onLongPress = { focusId ->
+                    appState.navController.navigateToEditFocus(focusId)
+            }
         )
-
     }
 }

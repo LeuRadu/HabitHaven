@@ -12,9 +12,12 @@ fun NavController.navigateToAgenda(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.agendaScreen(
-    onAddFocusButtonClick: () -> Unit
+    onAddFocusButtonClick: () -> Unit,
+    onLongPress: (String) -> Unit
 ) {
     composable(route = AGENDA_ROUTE) {
-        AgendaRoute(onAddFocusButtonClick = onAddFocusButtonClick)
+        AgendaRoute(
+            onAddFocusButtonClick = onAddFocusButtonClick,
+            onLongPress = onLongPress)
     }
 }

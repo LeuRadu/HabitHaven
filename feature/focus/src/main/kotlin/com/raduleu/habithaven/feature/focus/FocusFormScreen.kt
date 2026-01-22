@@ -16,16 +16,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,9 +43,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun CreateFocusRoute(
+fun FocusFormRoute(
     onBackClick: () -> Unit,
-    viewModel: CreateFocusViewModel = hiltViewModel()
+    viewModel: FocusFormViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -52,30 +56,57 @@ fun CreateFocusRoute(
         }
     }
 
-    CreateFocusScreen(
+    FocusFormScreen(
         uiState = uiState,
         onNameChange = viewModel::updateName,
         onIconSelect = viewModel::updateIconName,
         onColorSelect = viewModel::updateColorIndex,
         onSaveClick = viewModel::saveFocus,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onDeleteClick = viewModel::onDeleteClick,
+        onDeleteConfirm = viewModel::confirmDelete,
+        onDeleteDismiss = viewModel::onDeleteDismiss
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun CreateFocusScreen(
-    uiState: CreateFocusUiState,
+internal fun FocusFormScreen(
+    uiState: FocusFormUiState,
     onNameChange: (String) -> Unit,
     onIconSelect: (String) -> Unit,
     onColorSelect: (Int) -> Unit,
     onSaveClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onDeleteConfirm: () -> Unit,
+    onDeleteDismiss: () -> Unit,
 ) {
+    val titleText = if (uiState.isEditing) "Edit Focus" else "New Focus"
+    val buttonText = if (uiState.isEditing) "Save changes" else "Create Focus"
+
+    if (uiState.isDeleteDialogVisible) {
+        AlertDialog(
+            onDismissRequest = onDeleteDismiss,
+            title = { Text("Archive Focus?") },
+            text = { Text("This will hide the focus from your main agenda. You can restore it later from settings.") },
+            confirmButton = {
+                TextButton(onClick = onDeleteConfirm) {
+                    Text("Archive", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDeleteDismiss) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("New Focus") },
+                title = { Text(titleText) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -141,19 +172,32 @@ internal fun CreateFocusScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Save Button
-            Button(
-                onClick = onSaveClick,
-                modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.name.isNotBlank() && !uiState.isLoading
-            ) {
-                if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                } else {
-                    Text("Create Focus")
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(
+                    onClick = onSaveClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = uiState.name.isNotBlank() && !uiState.isLoading
+                ) {
+                    if (uiState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    } else {
+                        Text(buttonText)
+                    }
+                }
+
+                if (uiState.isEditing) {
+                    OutlinedButton(
+                        onClick = onDeleteClick,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text("Delete Focus")
+                    }
                 }
             }
         }
@@ -162,13 +206,16 @@ internal fun CreateFocusScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewCreateFocusScreen() {
-    CreateFocusScreen(
-        uiState = CreateFocusUiState(name = "My Focus", iconName = "code", colorIndex = 1),
+private fun PreviewFocusFormScreen() {
+    FocusFormScreen(
+        uiState = FocusFormUiState(name = "My Focus", iconName = "code", colorIndex = 1),
         onNameChange = {},
         onIconSelect = {},
         onColorSelect = {},
         onSaveClick = {},
-        onBackClick = {}
+        onBackClick = {},
+        onDeleteClick = {},
+        onDeleteConfirm = {},
+        onDeleteDismiss = {}
     )
 }

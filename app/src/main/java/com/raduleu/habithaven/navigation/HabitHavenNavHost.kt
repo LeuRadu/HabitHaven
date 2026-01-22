@@ -9,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.raduleu.habithaven.feature.agenda.agendaScreen
+import com.raduleu.habithaven.feature.agenda.navigateToAgenda
 import com.raduleu.habithaven.feature.focus.createFocusScreen
 import com.raduleu.habithaven.feature.focus.navigateToCreateFocus
 import com.raduleu.habithaven.ui.HabitHavenAppState
@@ -28,9 +30,9 @@ fun HabitHavenNavHost(
         composable("home_route") {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Button(onClick = {
-                    appState.navController.navigateToCreateFocus()
+                    appState.navController.navigateToAgenda()
                 }) {
-                    Text("Create New Focus")
+                    Text("Preview the app (work in progress)")
                 }
             }
         }
@@ -38,5 +40,10 @@ fun HabitHavenNavHost(
         createFocusScreen(
             onBackClick = { appState.popBackStack() }
         )
+
+        agendaScreen(
+            onAddFocusButtonClick = { appState.navController.navigateToCreateFocus() }
+        )
+
     }
 }

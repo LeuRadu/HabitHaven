@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -120,7 +119,7 @@ internal fun CreateFocusScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Color", style = MaterialTheme.typography.titleMedium)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    // Simulating a palette with simple Colors
+                    // TODO: replace with color palette
                     val colors = listOf(Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Magenta)
 
                     items(colors.indices.toList()) { index ->

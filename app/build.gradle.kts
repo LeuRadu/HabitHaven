@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:focus"))
+    implementation(project(":feature:agenda"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
